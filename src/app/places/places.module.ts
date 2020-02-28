@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { placeComponents } from "./components";
+import { PlaceComponents } from "./places.components";
 
 @NgModule({
-  declarations: placeComponents,
+  declarations: PlaceComponents,
   imports: [CommonModule],
-  exports: placeComponents
+  exports: PlaceComponents
 })
 export class PlacesModule {}
