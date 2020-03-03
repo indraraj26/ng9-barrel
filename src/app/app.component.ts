@@ -12,27 +12,56 @@ export class AppComponent {
   public myForm: FormGroup;
 
   constructor(private swUpdate: SwUpdate) {
-    this.myForm = new FormGroup(
-      {
-        test: new FormControl({ value: "indra", disabled: false }, [
-          Validators.required
-        ])
-      },
-      { updateOn: "blur" }
-    );
-    // console.log(this.myForm.getRawValue());
-    // console.log(this.myForm.value);
-    // this.myForm.get("test").disable();
-    // this.myForm.get("test").patchValue("indraraj");
+    this.myForm = new FormGroup({
+      status: new FormControl(""),
+      hobbies: new FormControl(""),
+      profile: new FormControl(""),
+      test: new FormControl("")
+    });
   }
 
   ngOnInit() {
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.available.subscribe(() => {
-        if (confirm("New version available. Load New Version?")) {
-          window.location.reload();
-        }
+    // if (this.swUpdate.isEnabled) {
+    //   this.swUpdate.available.subscribe(() => {
+    //     if (confirm("New version available. Load New Version?")) {
+    //       window.location.reload();
+    //     }
+    //   });
+    // }
+  }
+
+  onStatusChange() {
+    const statusValue = this.myForm.get("status").value;
+    if (statusValue == 1) {
+      this.handleValidation(["hobbies", "profile"], "");
+    } else {
+      this.handleValidation("", ["hobbies", "profile"]);
+    }
+  }
+
+  handleValidation(addValidationField, removeValidationField) {
+    if (addValidationField) {
+      let control: FormControl;
+      addValidationField.forEach(item => {
+        control = this.myForm.get(item) as FormControl;
+        control.markAsUntouched();
+        control.markAsPristine();
+        control.setValidators(Validators.required);
       });
     }
+    if (removeValidationField) {
+      let control: FormControl;
+      removeValidationField.forEach(item => {
+        control = this.myForm.get(item) as FormControl;
+        control.markAsUntouched();
+        control.markAsPristine();
+        control.clearValidators();
+        control.patchValue("");
+      });
+    }
+    this.myForm.updateValueAndValidity();
+  }
+  onSubmit() {
+    console.log(this.myForm.valid, this.myForm);
   }
 }

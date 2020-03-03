@@ -1,10 +1,32 @@
+<style>
+    div {
+        margin: 20px 10px;
+    }
+</style>
 <h1>Hello</h1>
 <app-test></app-test>
-<form [formGroup]="myForm">
-    <input formControlName="test">
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
     <div>
-        <pre>
-        {{myForm?.value | json}}
-        </pre>
+        <select formControlName="status" (change)="onStatusChange()">
+            <option value="1">Active</option>
+            <option value="2">Warmup</option>
+            <option value="0">InActive</option>
+        </select>
     </div>
+    <ng-container *ngIf="myForm.get('status').value == 1 || myForm.get('status').value == 2">
+        <div>
+            <input formControlName="hobbies" placeholder="hobbies">
+        </div>
+        <div>
+            <input formControlName="profile" placeholder="profile">
+        </div>
+    </ng-container>
+    <div>
+        <input formControlName="test" placeholder="test">
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+    <pre>{{myForm.valid}}</pre>
+    <pre>{{myForm?.value | json}}</pre>
 </form>
